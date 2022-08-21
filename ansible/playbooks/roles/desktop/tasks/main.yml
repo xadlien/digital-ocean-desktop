@@ -1,0 +1,37 @@
+- name: install necessary packages for a desktop
+  apt:
+    name: 
+    - ubuntu-gnome-desktop
+    - tigervnc-standalone-server
+    state: latest
+    update_cache: true
+  tags:
+  - desktop
+
+- name: start/enable gdm
+  systemd:
+    name: gdm
+    enabled: true
+    state: restarted
+  tags:
+  - desktop
+
+- name: create vnc dir
+  file:
+    name: /root/.vnc
+    state: directory
+  tags:
+  - desktop
+
+- name: create encoded passwd file
+  expect:
+    command: vncpasswd
+    responses:
+      Password: "{{ user_pass }}"
+      Verify: "{{ user_pass }}"
+      Would you like to enter a view-only password (y/n)?: "n"
+  tags:
+  - desktop
+
+- name: start vnc server
+  shell: vncserver
