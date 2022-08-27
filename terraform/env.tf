@@ -30,5 +30,5 @@ resource "digitalocean_droplet" "martin_desktop01" {
 
 # output ipv4 address
 output "dev_instance_ip_addr" {
-  value = digitalocean_droplet.martin_vpn.ipv4_address
+  value = digitalocean_droplet.martin_desktop01.ipv4_address
 }
