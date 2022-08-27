@@ -2,7 +2,7 @@
   apt:
     name: 
     - ubuntu-gnome-desktop
-    - tigervnc-standalone-server
+    - xrdp
     state: latest
     update_cache: true
   tags:
@@ -16,22 +16,32 @@
   tags:
   - desktop
 
-- name: create vnc dir
-  file:
-    name: /root/.vnc
-    state: directory
+- name: start/enable xrdp
+  systemd:
+    name: xrdp
+    enabled: true
+    state: restarted
   tags:
   - desktop
 
-- name: create encoded passwd file
-  expect:
-    command: vncpasswd
-    responses:
-      Password: "{{ user_pass }}"
-      Verify: "{{ user_pass }}"
-      Would you like to enter a view-only password (y/n)?: "n"
+- name: create user
+  user:
+    name: "{{ username }}"
+    password: "{{ userpass | string | password_hash('sha512')}}"
+    shell: /bin/bash
+    group: sudo
+    state: present
   tags:
   - desktop
 
-- name: start vnc server
-  shell: vncserver
+- name: template polkit for graphics
+  copy:
+    src: 45-allow-colord.pkla
+    dest: /etc/polkit-1/localauthority/50-local.d/45-allow-colord.pkla
+  tags:
+  - desktop 
+
+- name: reboot server for changes
+  reboot:
+  tags:
+  - desktop
