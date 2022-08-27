@@ -1,20 +1,21 @@
 - name: install necessary packages for a desktop
   apt:
     name: 
-    - ubuntu-gnome-desktop
+    - xfce4
+    - xfce4-goodies
     - xrdp
     state: latest
     update_cache: true
   tags:
   - desktop
 
-- name: start/enable gdm
-  systemd:
-    name: gdm
-    enabled: true
-    state: restarted
-  tags:
-  - desktop
+# - name: start/enable gdm
+#   systemd:
+#     name: gdm
+#     enabled: true
+#     state: restarted
+#   tags:
+#   - desktop
 
 - name: start/enable xrdp
   systemd:
@@ -41,6 +42,15 @@
   tags:
   - desktop 
 
+- name: install packages used for dev
+  apt:
+    name:
+    - firefox
+    - python3
+    - python3-venv
+  tags:
+  - desktop
+  
 - name: reboot server for changes
   reboot:
   tags:
