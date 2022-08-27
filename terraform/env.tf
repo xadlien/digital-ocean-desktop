@@ -24,7 +24,7 @@ resource "digitalocean_droplet" "martin_desktop01" {
     image  = "ubuntu-22-04-x64"
     name   = "martin-desktop01"
     region = "nyc3"
-    size   = "s-4vcpu-8gb"
+    size   = "g-2vcpu-8gb"
     ssh_keys = [32690924, 32843241]
 }
 
