@@ -20,7 +20,7 @@ provider "digitalocean" {
 }
 
 # Create the desktop
-resource "digitalocean_droplet" "martin_vpn" {
+resource "digitalocean_droplet" "martin_desktop01" {
     image  = "ubuntu-22-04-x64"
     name   = "martin-desktop01"
     region = "nyc3"
